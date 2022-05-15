@@ -1,0 +1,40 @@
+#include<LiquidCrystal.h>
+int relaypin=8;
+int alcohol_level;
+
+LiquidCrystal lcd(2,3,4,5,6,7);//RS,EA,D4,D5,D6,D7
+
+void setup()
+{
+  Serial.begin(9600);
+  pinMode(A0,INPUT);
+  pinMode(relaypin,OUTPUT);
+
+  lcd.begin(16,2);
+  lcd.print("ALCOHOLETECTION");
+  lcd.setCursor(3,2);
+  lcd.print("SYSTEM ON");
+
+  delay(3000);
+  digitalWrite(relaypin,1);
+  lcd.clear();
+}
+
+void loop()
+{
+  alcohol_level=analogRead(A0);
+  Serial.println("AlcoholLevel :");
+  Serial.println(alcohol_level);
+
+  if(alcohol_level>600)
+  {
+    lcd.clear();
+    digitalWrite(relaypin,1);
+    tone(12,1600);
+    lcd.print("ALCOHOL CONSUMED");
+    lcd.setCursor(1,2);
+    lcd.print("LEVEL :");
+    lcd.print(alcohol_level);
+    delay(5000);
+    
+  }
